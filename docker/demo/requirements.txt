@@ -1,0 +1,3 @@
+streamlit==0.62.*
+httpx==0.14.*
+pyarrow==1.0.0

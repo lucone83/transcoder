@@ -19,9 +19,9 @@ import os
 import sys
 
 import fastBPE
+import preprocessing.src.code_tokenizer as code_tokenizer
 import torch
 
-import preprocessing.src.code_tokenizer as code_tokenizer
 from XLM.src.data.dictionary import Dictionary, BOS_WORD, EOS_WORD, PAD_WORD, UNK_WORD, MASK_WORD
 from XLM.src.model import build_model
 from XLM.src.utils import AttrDict

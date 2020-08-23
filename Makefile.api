@@ -1,0 +1,51 @@
+
+BASE_DIR := $(CURDIR)
+DOCKER_IMAGE := transcoder
+WEIGHTS_FOLDER := $(CURDIR)/src/models
+WEIGHTS_URL_1 := https://storage.googleapis.com/transcoder-models-weights/current/model_1.pth
+WEIGHTS_URL_2 := https://storage.googleapis.com/transcoder-models-weights/current/model_2.pth
+
+
+##############################
+# Data
+##############################
+.PHONY: download-models-weights
+download-models-weights:
+	mkdir -p $(WEIGHTS_FOLDER)
+	wget $(WEIGHTS_URL_1) -P $(WEIGHTS_FOLDER)
+	wget $(WEIGHTS_URL_2) -P $(WEIGHTS_FOLDER)
+
+
+##############################
+# Build
+##############################
+
+.PHONY: build
+build:
+	docker build --rm -f docker/api/Dockerfile -t $(DOCKER_IMAGE) .
+
+
+##############################
+# Run
+##############################
+
+.PHONY: run
+run:
+	docker run --gpus all --rm -it -p 8080:8080 $(DOCKER_IMAGE)
+
+.PHONY: run-no-gpu
+run-no-gpu:
+	docker run --rm -it -p 8080:8080 $(DOCKER_IMAGE)
+
+
+##############################
+# Shell
+##############################
+
+.PHONY: shell
+shell:
+	docker run --gpus all --rm -it -p 8080:8080 $(DOCKER_IMAGE) /bin/bash
+
+.PHONY: shell-no-gpu
+shell-no-gpu:
+	docker run --rm -it -p 8080:8080 $(DOCKER_IMAGE) /bin/bash

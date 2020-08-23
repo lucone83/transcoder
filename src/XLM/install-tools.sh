@@ -66,11 +66,11 @@ fi
 #   echo "Please install Stanford segmenter in $TOOLS_PATH"
 #   exit 1
 # fi
-# 
+#
 # # Thai tokenizer
 # if ! python -c 'import pkgutil; exit(not pkgutil.find_loader("pythainlp"))'; then
 #   echo "pythainlp package not found in python"
 #   echo "Please install pythainlp (pip install pythainlp)"
 #   exit 1
 # fi
-# 
+#

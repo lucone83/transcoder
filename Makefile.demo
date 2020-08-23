@@ -1,0 +1,38 @@
+BASE_DIR := $(CURDIR)
+DOCKER_IMAGE := transcoder_demo
+
+ECR_REGISTRY_ID := 693293161016
+AWS_REGION := eu-west-1
+
+
+##############################
+# Build
+##############################
+
+.PHONY: login-ecr
+login-ecr:
+	$$(aws ecr get-login --registry-ids $(ECR_REGISTRY_ID) --no-include-email --region $(AWS_REGION))
+
+.PHONY: build
+build: login-ecr
+	docker build --rm -f docker/demo/Dockerfile \
+		-t $(DOCKER_IMAGE) .
+
+##############################
+# Run
+##############################
+
+.PHONY: run
+run:
+	docker run --rm -it -p 8080:8501 \
+  -v $(CURDIR)/src/demo:/home/app/src:ro \
+  -e TRANSCODER_API_HOST=$$TRANSCODER_API_HOST \
+   $(DOCKER_IMAGE)
+
+##############################
+# Shell
+##############################
+
+.PHONY: shell
+shell:
+	docker run --rm -it -p 8080:8501 $(DOCKER_IMAGE) /bin/bash
